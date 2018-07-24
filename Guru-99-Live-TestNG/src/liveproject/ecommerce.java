@@ -11,7 +11,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -19,6 +18,12 @@ import org.testng.annotations.Test;
 public class ecommerce {
 
 	public WebDriver driver;
+	
+	public int scc =0;
+	
+	public int pgld_time = 30;
+	
+	public int sleep_time = 5000;
 
 	public void Invokbrowser(String browserType) {
 
@@ -51,12 +56,12 @@ public class ecommerce {
 
 	public void openbrowser() {
 
-		Invokbrowser("chrome");
+		Invokbrowser("edge");
 
 	}
 
 	@Test
-	public void Test_001() {
+	public void Test_001() throws Throwable {
 
 		/*
 		 * Test Case Description : 
@@ -69,7 +74,7 @@ public class ecommerce {
 		 * Step 6 : Verify all products sorted by name || Expected : products should be sorted by name
 		 */
 
-		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
 
 		// Step 1:
 		driver.get("http://live.guru99.com/index.php/");
@@ -86,7 +91,9 @@ public class ecommerce {
 		
 		mobile.click();
 		
-		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
+		
+		Thread.sleep(sleep_time);
 		
 		//Step 4:
 		
@@ -126,7 +133,79 @@ public class ecommerce {
 				
 			System.out.println(list1.getAttribute("title"));
 	}
+		
+		//Taking Screenshot 
+		
+		/*scc=(scc+1);
+		
+		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		
+		String png = ("D:\\selinum training\\Guru99-Live"+ scc + ".png");
+		
+		FileUtils.copyFile(scrFile, new File(png));		
+		*/
 
+	}
+	
+	
+	@Test
+	
+	public void Test_002() throws Throwable {
+		/* Test Case Descripition :
+		 * Step 1: Go to http://live.guru99.com/index.php/ 
+		 * Step 2: click on Mobile
+		 * Step 3: Get the cost of sony  mobile
+		 * Step 4: Click on Sony mobile
+		 * Step 5: read the sony mobile cost
+		 * Step 6: Compare the value in Step 3 &5
+		 * 
+		 */
+		
+		//Step 1:
+		
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
+
+		driver.get("http://live.guru99.com/index.php/");
+
+		// Step 2
+		
+		WebElement mobile = driver.findElement(By.xpath("//a[contains(text(),'Mobile')]"));
+		
+		mobile.click();
+		
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
+		Thread.sleep(sleep_time);
+		//Step 3 :
+		
+		WebElement Sony1 =driver.findElement(By.xpath("//li[@class='item last']//div[@class='price-box']/Span[@id='product-price-1']/span"));
+		
+		String Price1 = Sony1.getText();
+		
+		System.out.println(Price1);
+		
+		//Step 4:
+		
+		driver.findElement(By.xpath("//li[@class='item last']//a[@title='Sony Xperia']")).click();
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
+		Thread.sleep(sleep_time);
+		//Step 5:
+		
+		WebElement Sony2 = driver.findElement(By.xpath("//span[@id ='product-price-1']/span"));
+		
+		String Price2 = Sony2.getText();
+		
+		System.out.println(Price2);
+		//Step 6:
+		Assert.assertEquals(Price1, Price2, "test case 2 filed");
+		
+	}
+
+	@AfterTest
+	
+	public void Closebrowser() {
+		
+		driver.quit();
+		
 	}
 	
 }
