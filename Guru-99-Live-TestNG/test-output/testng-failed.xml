@@ -5,8 +5,8 @@
     <classes>
       <class name="liveproject.ecommerce">
         <methods>
+          <include name="Test_003"/>
           <include name="openbrowser"/>
-          <include name="Test_002"/>
           <include name="Closebrowser"/>
         </methods>
       </class> <!-- liveproject.ecommerce -->

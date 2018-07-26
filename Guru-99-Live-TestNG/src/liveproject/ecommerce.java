@@ -9,7 +9,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -18,11 +21,11 @@ import org.testng.annotations.Test;
 public class ecommerce {
 
 	public WebDriver driver;
-	
-	public int scc =0;
-	
+
+	public int scc = 0;
+
 	public int pgld_time = 30;
-	
+
 	public int sleep_time = 5000;
 
 	public void Invokbrowser(String browserType) {
@@ -56,22 +59,21 @@ public class ecommerce {
 
 	public void openbrowser() {
 
-		Invokbrowser("edge");
+		Invokbrowser("chrome");
 
 	}
 
-	@Test
+	@Test(enabled = true, priority = 300)
 	public void Test_001() throws Throwable {
 
 		/*
-		 * Test Case Description : 
-		 * Step 1 : Go to Page :
-		 * http://live.guru99.com/index.php/ 
-		 * Step 2 : verify the title of page || Expected : "THIS IS DEMO SITE" shown in the home page 
-		 * Step 3 : Click on mobile 
-		 * Step 4 : Verify the title of the page || Expected : title "MOBILE"should be displayed 
-		 * Step 5 : in the list of all mobile select Sort by and select Name in that
-		 * Step 6 : Verify all products sorted by name || Expected : products should be sorted by name
+		 * Test Case Description : Step 1 : Go to Page :
+		 * http://live.guru99.com/index.php/ Step 2 : verify the title of page ||
+		 * Expected : "THIS IS DEMO SITE" shown in the home page Step 3 : Click on
+		 * mobile Step 4 : Verify the title of the page || Expected : title
+		 * "MOBILE"should be displayed Step 5 : in the list of all mobile select Sort by
+		 * and select Name in that Step 6 : Verify all products sorted by name ||
+		 * Expected : products should be sorted by name
 		 */
 
 		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
@@ -86,126 +88,195 @@ public class ecommerce {
 		Assert.assertEquals(Titel1_actual, Titel1_Expcted, " Step 2 failed");
 
 		// Step 3
-		
+
 		WebElement mobile = driver.findElement(By.xpath("//a[contains(text(),'Mobile')]"));
-		
+
 		mobile.click();
-		
+
 		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
-		
+
 		Thread.sleep(sleep_time);
-		
-		//Step 4:
-		
+
+		// Step 4:
+
 		String Titel2_actul = driver.getTitle();
-		
+
 		System.out.println("Current Page is : " + Titel2_actul);
-		
-		String Titel2_expcted ="Mobile";
-				
+
+		String Titel2_expcted = "Mobile";
+
 		Assert.assertEquals(Titel2_actul, Titel2_expcted);
-		
-		//List all products on the page
-		
-		List<WebElement> Phone = driver.findElements(By.xpath("//ul[@class='products-grid products-grid--max-4-col first last odd']//li[@class='item last']/a"));
-		
+
+		// List all products on the page
+
+		List<WebElement> Phone = driver.findElements(By.xpath(
+				"//ul[@class='products-grid products-grid--max-4-col first last odd']//li[@class='item last']/a"));
+
 		System.out.println("Before Sort Phone list is as below :\n");
-		for (WebElement list :Phone) {
-				
+		for (WebElement list : Phone) {
+
 			System.out.println(list.getAttribute("title"));
 		}
-		
-		//Step 5:
+
+		// Step 5:
 		// handlining drop down
-		
+
 		WebElement Option = driver.findElement(By.xpath("//div[@class='toolbar-bottom']//select[@title ='Sort By']"));
 
-		Select select = new Select(Option) ;
-		
+		Select select = new Select(Option);
+
 		select.selectByVisibleText("Name");
-		
 
-		List<WebElement> Phone1 = driver.findElements(By.xpath("//ul[@class='products-grid products-grid--max-4-col first last odd']//li[@class='item last']/a"));
-		
+		List<WebElement> Phone1 = driver.findElements(By.xpath(
+				"//ul[@class='products-grid products-grid--max-4-col first last odd']//li[@class='item last']/a"));
+
 		System.out.println("After Sort Phone list is as below :\n");
-		
-		for (WebElement list1 :Phone1) {
-				
+
+		for (WebElement list1 : Phone1) {
+
 			System.out.println(list1.getAttribute("title"));
-	}
-		
-		//Taking Screenshot 
-		
-		/*scc=(scc+1);
-		
-		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		
-		String png = ("D:\\selinum training\\Guru99-Live"+ scc + ".png");
-		
-		FileUtils.copyFile(scrFile, new File(png));		
-		*/
+		}
+
+		// Taking Screenshot
+
+		/*
+		 * scc=(scc+1);
+		 * 
+		 * File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		 * 
+		 * String png = ("D:\\selinum training\\Guru99-Live"+ scc + ".png");
+		 * 
+		 * FileUtils.copyFile(scrFile, new File(png));
+		 */
 
 	}
-	
-	
-	@Test
-	
+
+	@Test(priority = 100)
+
 	public void Test_002() throws Throwable {
-		/* Test Case Descripition :
-		 * Step 1: Go to http://live.guru99.com/index.php/ 
-		 * Step 2: click on Mobile
-		 * Step 3: Get the cost of sony  mobile
-		 * Step 4: Click on Sony mobile
-		 * Step 5: read the sony mobile cost
-		 * Step 6: Compare the value in Step 3 &5
+		/*
+		 * Test Case Descripition : Step 1: Go to http://live.guru99.com/index.php/ Step
+		 * 2: click on Mobile Step 3: Get the cost of sony mobile Step 4: Click on Sony
+		 * mobile Step 5: read the sony mobile cost Step 6: Compare the value in Step 3
+		 * &5
 		 * 
 		 */
-		
-		//Step 1:
-		
+
+		// Step 1:
+
 		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
 
 		driver.get("http://live.guru99.com/index.php/");
 
 		// Step 2
-		
+
 		WebElement mobile = driver.findElement(By.xpath("//a[contains(text(),'Mobile')]"));
-		
+
 		mobile.click();
-		
+
 		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
 		Thread.sleep(sleep_time);
-		//Step 3 :
-		
-		WebElement Sony1 =driver.findElement(By.xpath("//li[@class='item last']//div[@class='price-box']/Span[@id='product-price-1']/span"));
-		
+		// Step 3 :
+
+		WebElement Sony1 = driver.findElement(
+				By.xpath("//li[@class='item last']//div[@class='price-box']/Span[@id='product-price-1']/span"));
+
 		String Price1 = Sony1.getText();
-		
+
 		System.out.println(Price1);
-		
-		//Step 4:
-		
+
+		// Step 4:
+
 		driver.findElement(By.xpath("//li[@class='item last']//a[@title='Sony Xperia']")).click();
 		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
 		Thread.sleep(sleep_time);
-		//Step 5:
-		
+		// Step 5:
+
 		WebElement Sony2 = driver.findElement(By.xpath("//span[@id ='product-price-1']/span"));
-		
+
 		String Price2 = Sony2.getText();
-		
+
 		System.out.println(Price2);
-		//Step 6:
+		// Step 6:
 		Assert.assertEquals(Price1, Price2, "test case 2 filed");
-		
+
 	}
 
-	@AfterTest
-	
-	public void Closebrowser() {
+	@Test (priority = 200)
+
+	public void Test_003() throws Throwable {
+		/*
+		 * Test Descrption : Step 1: Go to http://live.guru99.com/index.php/ Step 2:
+		 * click on Mobile Step 3: add sony mobile to cart Step 4: change QTY to 1000
+		 * Step 5: Verfiy the error message Step 6:click on Empty cart link Step 7:
+		 * verfiz the cart is empty
+		 */
+
+		// Step 1:
+
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
+
+		driver.get("http://live.guru99.com/index.php/");
+
+		// Step 2
+
+		WebElement mobile = driver.findElement(By.xpath("//a[contains(text(),'Mobile')]"));
+
+		mobile.click();
+
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
+		// step 3
+		driver.findElement(By.xpath("//a[contains(text(),'Sony Xperia')]//following :: button[@type='button']"))
+				.click();
+
+		Thread.sleep(sleep_time);
+		// step 4
+		WebElement qty = driver.findElement(By.xpath("//input[@title='Qty']"));
+
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+
+		wait.until(ExpectedConditions.elementToBeClickable(qty));
+
+		qty.click();
+		qty.sendKeys("1000");
+
+		driver.findElement(By.xpath("//td[@data-rwd-label='Qty']//button[@name='update_cart_action']")).click();
+
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
 		
-		driver.quit();
+
+		String Exp_message = "* The maximum quantity allowed for purchase is 500.";
+
+		String Actul_message = driver.findElement(By.xpath("//p[@class='item-msg error']")).getText();
+		System.out.println("Actual message is : " + Actul_message);
+		System.out.println("Exepected message is : " + Exp_message);
+		// step 5
+		Assert.assertEquals(Actul_message, Exp_message);
 		
+		//step 6
+		
+		driver.findElement(By.xpath("//button[@id ='empty_cart_button']")).click();
+		
+		driver.manage().timeouts().pageLoadTimeout(pgld_time, TimeUnit.SECONDS);
+		
+		String exp_finalmessage = "SHOPPING CART IS EMPTY";
+		
+		String act_actualmessage = driver.findElement(By.xpath("//div[@class='page-title']")).getText();
+		
+		System.out.println("Expcted message is : " + exp_finalmessage );
+		
+		System.out.println("Actual message is : "+act_actualmessage);
+		//step 7
+		Assert.assertEquals(act_actualmessage, exp_finalmessage);
+
 	}
-	
+
+	 @AfterTest
+
+	public void Closebrowser() {
+
+		driver.quit();
+
+	}
+
 }
